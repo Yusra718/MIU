@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", function() {
         return element
     };
 
-    var decorType = ["What would you like?", "Tinsel", "Lights", "Ceiling", "Balloons"],
+    var decorType = ["What would you like?", "Tinsel", "Lights", "Ceiling", "Balloons", "Banners"],
     	save = getId("save"),
     	displayData = getId("displaydata"),
     	clear = getId("clearstoreddata"),
@@ -23,8 +23,9 @@ window.addEventListener("DOMContentLoaded", function() {
     	white = getId("white"),
     	yellow = getId("yellow"),
     	gray = getId("gray"),
-    	balloonTypeValue,
-    	tinselTypeValue,
+    	packTypeValue,
+    	colorTypeValue,
+        colorAmountValue,
         myColors = [blue, green, red, pink, purple, orange, black, white, yellow, gray],
         errorList = getId("error"),
         colors = [];
@@ -32,13 +33,25 @@ window.addEventListener("DOMContentLoaded", function() {
     function toggleDisplay(n){
         switch(n){
             case "on":
-                getId("decorateForm").style.display = "none";
+                getId("page1").style.display = "none";
+                getId("page2").style.display = "none";
+                getId("page3").style.display = "none";
+                getId("page4").style.display = "none";
+                getId("page5").style.display = "none";
+                getId("page6").style.display = "none";
+                getId("page7").style.display = "none";
                 clear.style.display = "inline";
                 displayData.style.display = "none";
                 getId("addItem").style.display = "inline";
                 break;
             case "off":
-                getId("decorateForm").style.display = "block";
+                getId("page1").style.display = "block";
+                getId("page2").style.display = "block";
+                getId("page3").style.display = "block";
+                getId("page4").style.display = "block";
+                getId("page5").style.display = "block";
+                getId("page6").style.display = "block";
+                getId("page7").style.display = "block";
                 clear.style.display = "inline";
                 displayData.style.display = "inline";
                 getId("addItem").style.display = "none";
@@ -48,28 +61,6 @@ window.addEventListener("DOMContentLoaded", function() {
                 return false;
         }
     };
-
-    function toggles(){
-    	balloonDisplay();
-		tinselDisplay();
-    };
-	
-	function balloonDisplay(){
-		if(getId("type").value == "Balloons"){
-			getId("balloon").style.display = "inline-block"
-		} else {
-			getId("balloon").style.display = "none"
-		}
-	};
-
-	function tinselDisplay(){
-		if(getId("type").value == "Tinsel"){
-			getId("tinsel").style.display = "inline-block"
-		} else {
-			getId("tinsel").style.display = "none"
-		}
-	};
-
 
 	function makeType(){
 	        var form = document.getElementsByTagName("form"),
@@ -82,24 +73,24 @@ window.addEventListener("DOMContentLoaded", function() {
 	            makeOption.setAttribute("value", optText);
 	            makeOption.innerHTML = optText;
 	            makeSelect.appendChild(makeOption);
-	        }
+	           }
 	        selectLi.appendChild(makeSelect);
 	};
 
-	function getBalloonType(){
-		var typeBalloon = document.forms[0].balloonType;
-        for(var i=0; i<typeBalloon.length; i++) {
-            if (typeBalloon[i].checked){
-                balloonTypeValue = typeBalloon[i].value;
+	function colorStyle(){
+		var styleColor = document.forms[2].colorStyle;
+        for(var i=0; i<styleColor.length; i++) {
+            if (styleColor[i].checked){
+                colorTypeValue = styleColor[i].value;
             }
         }
     };
 
-    function getTinselType(){
-    	var typeTinsel = document.forms[0].tinselType;
-        for(var i=0; i<typeTinsel.length; i++) {
-            if (typeTinsel[i].checked){
-                tinselTypeValue = typeTinsel[i].value;
+    function colorAmount(){
+    	var amountColor = document.forms[3].colorAmount;
+        for(var i=0; i<amountColor.length; i++) {
+            if (amountColor[i].checked){
+                colorAmountValue = amountColor[i].value;
             }
         }
     };
@@ -116,22 +107,20 @@ window.addEventListener("DOMContentLoaded", function() {
 	function saveData(key){
 
 		if(!key){
-            var id = Math.floor(Math.random()*10000001);
+            var id = Math.floor(Math.random()*1000001);
         } else {
             id = key;
         }
-		getBalloonType();
-		getTinselType();
+		colorStyle();
+		colorAmount();
         var decor = {};
 			decor.dectype = ["Type: ", getId("type").value];
-			if(getId("type").value == "Balloons"){
-				decor.balloonType = ["Balloon Type: ", balloonTypeValue];
-			} else if(getId("type").value == "Tinsel"){
-				decor.tinselType = ["Tinsel Type: ", tinselTypeValue];
-			}
+			decor.colorType = ["Color Style: ", colorTypeValue];
+			decor.colorAmount = ["Multiple/Separate: ", colorAmountValue];
 			decor.colors = ["Color(s): ", colors];
             decor.occasion = ["Occasion: ", getId("occasion").value];
             decor.notes = ["Notes: ", getId("notes").value];
+            decor.typePack = ["Business/Personal: ", getId("packAmount").value];
             decor.packs = ["How many packs? : ", getId("howMany").value];
 		localStorage.setItem(id, JSON.stringify(decor));
 		alert("Added to Cart!");
@@ -204,25 +193,24 @@ window.addEventListener("DOMContentLoaded", function() {
         toggleDisplay("off");
 
         getId("type").value = decor.dectype[1];
-        if (decor.dectype[1] == "Balloons"){
-            var balloonRadios = document.forms[0].balloonType;
-            for(var i=0, j=balloonRadios.length; i<j; i++){
-                if(balloonRadios[i].value == "Metallic" && decor.balloonType[1] == "Metallic"){
-                    balloonRadios[i].setAttribute("checked", "checked");
-                } else if(balloonRadios[i].value == "Regular" && decor.balloonType[1] == "Regular"){
-                    balloonRadios[i].setAttribute("checked", "checked");
+        
+            var colorTypeRadios = document.forms[2].colorStyle;
+            for(var i=0, j=colorTypeRadios.length; i<j; i++){
+                if(colorTypeRadios[i].value == "Metallic" && decor.colorType[1] == "Metallic"){
+                    colorTypeRadios[i].setAttribute("checked", "checked");
+                } else if(colorTypeRadios[i].value == "Regular" && decor.colorType[1] == "Regular"){
+                    colorTypeRadios[i].setAttribute("checked", "checked");
                 }
             }
-        } else if (decor.dectype[1] == "Tinsel"){
-            var tinselRadios = document.forms[0].tinselType;
-            for(var i=0, j=tinselRadios.length; i<j; i++){
-                if(tinselRadios[i].value == "Multiple Colors" && decor.tinselType[1] == "Multiple Colors"){
-                    tinselRadios[i].setAttribute("checked", "checked");
-                } else if(tinselRadios[i].value == "Separate Colors" && decor.tinselType[1] == "Separate Colors"){
-                    tinselRadios[i].setAttribute("checked", "checked");
+
+            var colorRadios = document.forms[3].colorAmount;
+            for(var i=0, j=colorRadios.length; i<j; i++){
+                if(colorRadios[i].value == "Multiple Colors" && decor.colorAmount[1] == "Multiple Colors"){
+                    colorRadios[i].setAttribute("checked", "checked");
+                } else if(colorRadios[i].value == "Separate Colors" && decor.colorAmount[1] == "Separate Colors"){
+                    colorRadios[i].setAttribute("checked", "checked");
                 }
             }
-        }
 
         for(var k=0, l=decor.colors[1].length; k<l; k++){
             for(var i=0, j=myColors.length; i<j; i++){
@@ -232,6 +220,7 @@ window.addEventListener("DOMContentLoaded", function() {
             }
         }
 
+        getId("packAmount").value = decor.typePack[1];
         getId("occasion").value = decor.occasion[1];
         getId("notes").value = decor.notes[1];
         getId("howMany").value = decor.packs[1];
@@ -260,43 +249,56 @@ window.addEventListener("DOMContentLoaded", function() {
         errorList.innerHTML = "";
         getId("type").style.border = "none";
         getId("colors").style.border = "none";
-        getId("packs").style.border = "none"
+        getId("packs").style.border = "none";
+        getId("packAmount").style.border = "none";
         var errors = [],
-        validatingTinsel = [],
-        validatingBalloons = [];
+        validatingColorAmount = [],
+        validatingColorStyle = [];
         if(getId("type").value == "What would you like?"){
             var typeError = "Please choose Type.";
             getId("type").style.border = "1px solid red";
             errors.push(typeError);
-        } else if(getId("type").value == "Tinsel"){
-            var tinselValidate = document.forms[0].tinselType;
-            for(var i=0, j=tinselValidate.length; i<j; i++){
-                if(tinselValidate[i].checked){
-                    validatingTinsel.push(tinselValidate[i].value);
-                }
-            }
-            if(validatingTinsel.length === 0){
-                 var tinselTypeError = "Please choose Tinsel Type.";
-                 getId("tinsel").style.border = "1px solid red";
-                 errors.push(tinselTypeError);
-            } else if(validatingTinsel.length >=1){
-                getId("tinsel").style.border = "none";
-            }
-        } else if(getId("type").value == "Balloons"){
-            var balloonValidate = document.forms[0].balloonType;
-            for(var i=0, j=balloonValidate.length; i<j; i++){
-                if(balloonValidate[i].checked){
-                    validatingBalloons.push(balloonValidate[i].value);
-                }
-            }
-            if(validatingBalloons.length === 0){
-                 var balloonTypeError = "Please choose Balloon Type.";
-                 getId("balloon").style.border = "1px solid red";
-                 errors.push(balloonTypeError);
-            } else if(validatingBalloons.length >=1){
-                getId("balloon").style.border = "none";
+        }
+
+        if(getId("packAmount").value == "Business/Personal"){
+            var packAmountErr = "Please choose Business or Personal order.";
+            getId("packAmount").style.border = "1px solid red";
+            errors.push(packAmountErr);
+        }
+
+        var amountColorValidate = document.forms[3].colorAmount;
+        for(var i=0, j=amountColorValidate.length; i<j; i++){
+            if(amountColorValidate[i].checked){
+                validatingColorAmount.push(amountColorValidate[i].value);
             }
         }
+
+        if(validatingColorAmount.length === 0){
+             var clrAmntErr = 'Please choose "Multiple" or "Separate" colors.';
+             getId("colorPerPiece").style.border = "1px solid red";
+             errors.push(clrAmntErr);
+        } else if(validatingColorAmount.length >=1){
+            getId("colorPerPiece").style.border = "none";
+        }
+    
+
+
+        var colorStyleValidate = document.forms[2].colorStyle;
+        for(var i=0, j=colorStyleValidate.length; i<j; i++){
+            if(colorStyleValidate[i].checked){
+                validatingColorStyle.push(colorStyleValidate[i].value);
+            }
+        }
+
+        if(validatingColorStyle.length === 0){
+             var clrStyleErr = "Please choose Balloon Type.";
+             getId("colorType").style.border = "1px solid red";
+             errors.push(clrStyleErr);
+        } else if(validatingColorStyle.length >=1){
+            getId("colorType").style.border = "none";
+        }
+
+
         if(colors.length === 0){
             var colorsError = "A minimum of one color chosen is required.";
             getId("colors").style.border = "1px solid red";
@@ -319,8 +321,7 @@ window.addEventListener("DOMContentLoaded", function() {
         } else {
             saveData(this.key);
             window.location.reload();
-        }
-        
+        }   
     }
 
     function defaultData(){
@@ -342,8 +343,7 @@ window.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-	makeType();
-	getId("type").addEventListener("click", toggles);
+  	makeType();
     save.addEventListener("click", colorsPush);
     save.addEventListener("click", validate);
 	displayData.addEventListener("click", getData);

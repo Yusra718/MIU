@@ -19,7 +19,7 @@ fieldset{
 }
 
 header{
-	display: inline-block;
+	display: block;
     padding-left: 20px;
 }
 
