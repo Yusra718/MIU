@@ -9,18 +9,43 @@
         <meta name="description" content="My first HTML document" />
         <meta name="keywords" content="holiday, decorating" />
         <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="user-scalable=yes, width=device-width" />
+        <meta name="viewport" content="user-scalable=no, width=device-width" />
         <title>Holiday Spirit</title>
         <link href="css/styles.css" rel="stylesheet">
+        <link href="css/jquery.mobile-1.2.0.css" rel="stylesheet"/>
+        <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="js/jquery-migrate-1.1.0.js" type="text/javascript"></script>
+        <script src="js/jquery.mobile-1.2.0.js" type="text/javascript"></script>
     </head>
     <body>
         <h1>The Holiday Spirit</h1>
         <div>Decorate for the holidays!</div>
-        <caption for="featured"></caption>
-        <div id="featured">
-            <a href="additem.html#page2"><img src="Img/Feature.jpeg" alt="Feature" height="100" width="200" class="gallery" /></a>
-        </div>
-        <h2>Get Started</h2>
+        <section id="page1" data-role="page">
+            <header data-role="header">
+                <h1>Decorations</h1>
+            </header>
+            <nav>
+                <div><input type="search" /> <input type="button" id="search" value="Search"/></div>
+                <a href="#" id="clearstoreddata">Clear All Decor</a>
+                <a href="#" id="displaydata">My Decor</a>
+                <a href="additem.html" id="addItem">Add Decor</a>
+            </nav>
+            <caption for="featured"></caption>
+            <div id="featured">
+                <a href="additem.html#page2"><img src="Img/Feature.jpeg" alt="Feature" height="100" width="200" class="gallery" /></a>
+            </div>
+            <div data-role="content">
+                <form action="" method="post" id="pages">
+                    Browse by...
+                    <a type="button" href="additem.html#page2" data-transition="slide">Category</a>
+                    <a type="button" href="additem.html#page3" data-transition="slide">Color Style</a>
+                    <a type="button" href="additem.html#page4" data-transition="slide">Multiple/Separate Colors</a>
+                    <a type="button" href="additem.html#page5" data-transition="slide">Colors</a>
+                    <a type="button" href="additem.html#page7" data-transition="slide">Order Type</a>
+                    <a type="button" href="additem.html#page6" data-transition="slide">Complete Order</a>
+                </form>
+            </div>
+        </section>
         <a href="additem.html" title="Decorate">Start Now</a>
     </body>
 </html>
