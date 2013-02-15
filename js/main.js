@@ -2,6 +2,13 @@
 // Project 2: Web App Part 2
 // Visual Frameworks Term 1211
 
+var today = new Date();
+document.write(today);
+
+function sliderChange(val) {
+    document.getElementById('sliderStatus').innerHTML = val;
+};
+
 window.addEventListener("DOMContentLoaded", function() {
 
 	function getId(id) {
@@ -40,18 +47,20 @@ window.addEventListener("DOMContentLoaded", function() {
                 getId("page5").style.display = "none";
                 getId("page6").style.display = "none";
                 getId("page7").style.display = "none";
+                getId("displayPage").style.display = "none";
                 clear.style.display = "inline";
                 displayData.style.display = "none";
                 getId("addItem").style.display = "inline";
                 break;
             case "off":
-                getId("page1").style.display = "block";
-                getId("page2").style.display = "block";
-                getId("page3").style.display = "block";
-                getId("page4").style.display = "block";
-                getId("page5").style.display = "block";
-                getId("page6").style.display = "block";
-                getId("page7").style.display = "block";
+                getId("page1").style.display = "none";
+                getId("page2").style.display = "none";
+                getId("page3").style.display = "none";
+                getId("page4").style.display = "none";
+                getId("page5").style.display = "none";
+                getId("page6").style.display = "none";
+                getId("page7").style.display = "none";
+                getId("displayPage").style.display = "block";
                 clear.style.display = "inline";
                 displayData.style.display = "inline";
                 getId("addItem").style.display = "none";
@@ -78,7 +87,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	};
 
 	function colorStyle(){
-		var styleColor = document.forms[2].colorStyle;
+		var styleColor = $("input:radio[name=colorStyle]");
         for(var i=0; i<styleColor.length; i++) {
             if (styleColor[i].checked){
                 colorTypeValue = styleColor[i].value;
@@ -87,7 +96,7 @@ window.addEventListener("DOMContentLoaded", function() {
     };
 
     function colorAmount(){
-    	var amountColor = document.forms[3].colorAmount;
+    	var amountColor = $("input:radio[name=colorAmount]");
         for(var i=0; i<amountColor.length; i++) {
             if (amountColor[i].checked){
                 colorAmountValue = amountColor[i].value;
@@ -122,8 +131,9 @@ window.addEventListener("DOMContentLoaded", function() {
             decor.notes = ["Notes: ", getId("notes").value];
             decor.typePack = ["Business/Personal: ", getId("packAmount").value];
             decor.packs = ["How many packs? : ", getId("howMany").value];
+            decor.saveTime = ["Saved/Editted: ", today.getTime()]
 		localStorage.setItem(id, JSON.stringify(decor));
-		alert("Added to Cart!");
+		alert("Saved!");
 	};
 
 	function getData(){
@@ -157,6 +167,19 @@ window.addEventListener("DOMContentLoaded", function() {
             makeItemLinks(localStorage.key(i), links);
         }
 	};
+
+    function editDisplay(){
+        var displayArray = [getId("decorateTypeForm"), getId("colorType"), getId("colorPerPiece"), getId("colorForm"), getId("saveForm"), getId("extraForm"), getId("save")];
+        var editUl = document.createElement("ul");
+        var displayPage = getId("displayPage");
+        for(var i=0, j=displayArray.length; i<j; i++){
+            var editLi = document.createElement("li");
+            displayArray[i].style.display = "inline-block";
+            editLi.appendChild(displayArray[i]);
+            editUl.appendChild(editLi);
+        }
+        displayPage.appendChild(editUl);
+    }
 
     function storeImage(image, makeSubList){
         var imageLi = document.createElement("li");
@@ -194,7 +217,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
         getId("type").value = decor.dectype[1];
         
-            var colorTypeRadios = document.forms[2].colorStyle;
+            var colorTypeRadios = $("input:radio[name=colorStyle]");
             for(var i=0, j=colorTypeRadios.length; i<j; i++){
                 if(colorTypeRadios[i].value == "Metallic" && decor.colorType[1] == "Metallic"){
                     colorTypeRadios[i].setAttribute("checked", "checked");
@@ -203,7 +226,7 @@ window.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            var colorRadios = document.forms[3].colorAmount;
+            var colorRadios = $("input:radio[name=colorAmount]");
             for(var i=0, j=colorRadios.length; i<j; i++){
                 if(colorRadios[i].value == "Multiple Colors" && decor.colorAmount[1] == "Multiple Colors"){
                     colorRadios[i].setAttribute("checked", "checked");
@@ -226,6 +249,8 @@ window.addEventListener("DOMContentLoaded", function() {
         getId("howMany").value = decor.packs[1];
         sliderChange(getId("howMany").value);
         
+
+        editDisplay();
 
         save.removeEventListener("click", validate);
         getId("save").value = "Edit Item";
@@ -266,7 +291,7 @@ window.addEventListener("DOMContentLoaded", function() {
             errors.push(packAmountErr);
         }
 
-        var amountColorValidate = document.forms[3].colorAmount;
+        var amountColorValidate = $("input:radio[name=colorAmount]");
         for(var i=0, j=amountColorValidate.length; i<j; i++){
             if(amountColorValidate[i].checked){
                 validatingColorAmount.push(amountColorValidate[i].value);
@@ -283,7 +308,7 @@ window.addEventListener("DOMContentLoaded", function() {
     
 
 
-        var colorStyleValidate = document.forms[2].colorStyle;
+        var colorStyleValidate = $("input:radio[name=colorStyle]");
         for(var i=0, j=colorStyleValidate.length; i<j; i++){
             if(colorStyleValidate[i].checked){
                 validatingColorStyle.push(colorStyleValidate[i].value);
@@ -291,7 +316,7 @@ window.addEventListener("DOMContentLoaded", function() {
         }
 
         if(validatingColorStyle.length === 0){
-             var clrStyleErr = "Please choose Balloon Type.";
+             var clrStyleErr = "Please choose Color Type.";
              getId("colorType").style.border = "1px solid red";
              errors.push(clrStyleErr);
         } else if(validatingColorStyle.length >=1){
